@@ -21,38 +21,42 @@
 
 import Foundation
 import AVFoundation
-import Commander
 
-let main = command(
-    Flag("verbose", description:"Prints verbose information about the file"),
-    Argument<String>("file")
-) { verbose, file in
+import ArgumentParser
 
-    print("File \(file)\n")
-    let nilStr = "(nil)"
-    let asset = AVURLAsset(url: NSURL.fileURL(withPath: file) , options: nil)
+struct MetadataPrinter: ParsableCommand {
+    @Argument(help: "Media input file path")
+    var file: String
 
-    if (verbose) {
-        print("Available Metadata Formats:")
-        for formatStr:AVMetadataFormat in asset.availableMetadataFormats {
-            print(" - \(formatStr)")
-        }
-        print("")
-        print("All Metadata:")
-        for item:AVMetadataItem in asset.metadata {
-            print(" - Key: \(item.commonKey?.rawValue ?? "nil") (\(item.key!))")
-            print("   - ID:        \(item.identifier?.rawValue ?? nilStr)")
-            print("   - Language:  \(item.extendedLanguageTag ?? nilStr)")
-            print("   - Key space: \(item.keySpace?.rawValue ?? nilStr)")
-            print("   - Value:     \(item.value!)")
-        }
-    } else {
-        print("Metadata:")
-        for item:AVMetadataItem in asset.metadata {
-            print("\(item.commonKey?.rawValue ?? nilStr): \(item.value!)")
+    @Flag(help: "Print verbose information about the input file.")
+    var verbose = false
+
+    mutating func run() throws {
+        print("File \(file)\n")
+        let nilStr = "(nil)"
+        let asset = AVURLAsset(url: NSURL.fileURL(withPath: file) , options: nil)
+
+        if (verbose) {
+            print("Available Metadata Formats:")
+            for formatStr:AVMetadataFormat in asset.availableMetadataFormats {
+                print(" - \(formatStr)")
+            }
+            print("")
+            print("All Metadata:")
+            for item:AVMetadataItem in asset.metadata {
+                print(" - Key: \(item.commonKey?.rawValue ?? "nil") (\(item.key!))")
+                print("   - ID:        \(item.identifier?.rawValue ?? nilStr)")
+                print("   - Language:  \(item.extendedLanguageTag ?? nilStr)")
+                print("   - Key space: \(item.keySpace?.rawValue ?? nilStr)")
+                print("   - Value:     \(item.value!)")
+            }
+        } else {
+            print("Metadata:")
+            for item:AVMetadataItem in asset.metadata {
+                print("\(item.commonKey?.rawValue ?? nilStr): \(item.value!)")
+            }
         }
     }
-
 }
 
-main.run()
+MetadataPrinter.main()

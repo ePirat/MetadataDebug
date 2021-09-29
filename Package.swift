@@ -7,12 +7,12 @@ let package = Package(
         .executable(name: "MetadataDebug", targets: ["MetadataDebug"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/kylef/Commander", from: "0.5.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
     ],
     targets: [
         .target(
             name: "MetadataDebug",
-            dependencies: ["Commander"],
+            dependencies: ["ArgumentParser"],
             path: "Sources"),
     ]
 )
