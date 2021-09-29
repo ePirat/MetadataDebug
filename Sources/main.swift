@@ -34,22 +34,22 @@ let main = command(
 
     if (verbose) {
         print("Available Metadata Formats:")
-        for formatStr:String in asset.availableMetadataFormats {
+        for formatStr:AVMetadataFormat in asset.availableMetadataFormats {
             print(" - \(formatStr)")
         }
         print("")
         print("All Metadata:")
         for item:AVMetadataItem in asset.metadata {
-            print(" - Key: \(item.commonKey ?? nilStr) (\(item.key!))")
-            print("   - ID:        \(item.identifier ?? nilStr)")
+            print(" - Key: \(item.commonKey?.rawValue ?? "nil") (\(item.key!))")
+            print("   - ID:        \(item.identifier?.rawValue ?? nilStr)")
             print("   - Language:  \(item.extendedLanguageTag ?? nilStr)")
-            print("   - Key space: \(item.keySpace ?? nilStr)")
+            print("   - Key space: \(item.keySpace?.rawValue ?? nilStr)")
             print("   - Value:     \(item.value!)")
         }
     } else {
         print("Metadata:")
         for item:AVMetadataItem in asset.metadata {
-            print("\(item.commonKey ?? nilStr): \(item.value!)")
+            print("\(item.commonKey?.rawValue ?? nilStr): \(item.value!)")
         }
     }
 
